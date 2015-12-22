@@ -2,14 +2,15 @@ ENV['RACK_ENV'] ||= 'development'
 
 require 'sinatra/base'
 require_relative 'data_mapper_setup'
+require 'sinatra/flash'
 
 class BookmarkManager < Sinatra::Base
   enable :sessions
-  set :sessions, true
-  set :public, 'public'
+  set :session_secret, 'super secret'
+  set :public_folder, 'public'
+  register Sinatra::Flash
 
   get '/links' do
-    @message = session.delete(:message)
     @links = Link.all
     erb :'links/index'
   end
@@ -25,7 +26,7 @@ class BookmarkManager < Sinatra::Base
       link.tags << tag
     end
     link.save
-    session[:message] = 'Link successfully added'
+    flash[:message] = 'Link successfully added'
     redirect '/links'
   end
 
@@ -40,10 +41,20 @@ class BookmarkManager < Sinatra::Base
   end
 
   post '/register' do
-    User.create(name: params[:name], email: params[:email], password: params[:password])
-    session[:message] = "Welcome #{User.last.name}!"
-    redirect '/links'
+    user = User.new(name: params[:name], email: params[:email].downcase,
+            password_confirmation: params[:password_confirmation])
+    user.password = params[:password]
+    if user.save
+      flash[:message] = "Welcome #{user.name}!"
+      redirect '/links'
+    else
+      flash[:name] = user.name
+      flash[:email] = user.email
+      flash[:errors] = user.errors.inject { |sum, error| sum+'. '+error }
+      redirect '/register'
+    end
   end
+
 
   # start the server if ruby file executed directly
   run! if app_file == $PROGRAM_NAME

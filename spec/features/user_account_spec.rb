@@ -1,32 +1,36 @@
-feature 'when a user creates a new account' do
-  before do
-    User.create(name: 'Camilla', email: 'camilla@email.com', password: 'camilla')
-  end
+feature 'Registering' do
 
-  scenario 'a welcome message is shown' do
-    visit('/register')
-    fill_in('name', with: 'Giamir')
-    fill_in('email', with: 'giamir.buoncristiani@gmail.com')
-    fill_in('password', with: 'giamir90')
-    click_button('Register')
+  scenario 'user creates a new account' do
+    start_registration
+    fill_in('password_confirmation', with: 'giamir90')
+    expect { click_button('Register') }.to change(User, :count).by(1)
+    expect(User.last.email).to eq 'giamir.buoncristiani@gmail.com'
     expect(current_path).to eq '/links'
     expect(page).to have_content 'Welcome Giamir!'
   end
 
-  scenario 'user count increases by 1' do
+  scenario 'if email isn\'t enetered, user can\'t register' do
     visit('/register')
     fill_in('name', with: 'Giamir')
-    fill_in('email', with: 'giamir.buoncristiani@gmail.com')
     fill_in('password', with: 'giamir90')
-    expect { click_button('Register') }.to change { User.last.id }.by(1)
+    fill_in('password_confirmation', with: 'giamir90')
+    expect { click_button('Register') }.not_to change(User, :count)
+    expect(page).to have_content 'Email must not be blank'
+    expect(page).to have_selector("input[value='Giamir']")
+    expect(current_path).not_to eq '/links'
   end
 
-  scenario 'user email address entered matches the one saved in database' do
-    visit('/register')
-    fill_in('name', with: 'Giamir')
-    fill_in('email', with: 'giamir.buoncristiani@gmail.com')
-    fill_in('password', with: 'giamir90')
+  scenario 'if the password is mismatching, no user are created' do
+    start_registration
+    fill_in('password_confirmation', with: 'giamir80')
+    expect { click_button('Register') }.not_to change(User, :count)
+    expect(current_path).not_to eq '/links'
+  end
+
+  scenario 'if the password is mismatching, an error is displayed and
+    email and name are still filled in' do
+    start_registration
+    fill_in('password_confirmation', with: 'giamir80')
     click_button('Register')
-    expect(User.last.email).to eq 'giamir.buoncristiani@gmail.com'
   end
 end
