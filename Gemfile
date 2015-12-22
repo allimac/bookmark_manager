@@ -6,7 +6,7 @@ group :development, :production do
   gem 'dm-postgres-adapter', '~>1.2'
   gem 'dm-transactions'
   gem 'rake', '~> 10.4', '>= 10.4.2'
-  gem 'bcrypt-ruby', '~> 3.1', '>= 3.1.5'
+  gem 'bcrypt', '~> 3.1', '>= 3.1.10'
   gem 'sinatra-flash', '~> 0.3.0'
   gem 'sinatra', '~> 1.4', '>= 1.4.6'
 end
