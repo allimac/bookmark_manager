@@ -50,8 +50,23 @@ class BookmarkManager < Sinatra::Base
     else
       flash[:name] = user.name
       flash[:email] = user.email
-      flash[:errors] = user.errors.inject { |sum, error| sum+'. '+error }
+      flash[:errors] = user.errors.full_messages
       redirect '/register'
+    end
+  end
+
+  get '/login' do
+    erb :login
+  end
+
+  post '/login' do
+    user = User.first(email: params[:email])
+    if user.autenticate?(params[:password])
+      flash[:message] = "Welcome back #{user.name}!"
+      redirect '/links'
+    else
+      flash[:errors] = user.errors.full_messages
+      redirect '/login'
     end
   end
 

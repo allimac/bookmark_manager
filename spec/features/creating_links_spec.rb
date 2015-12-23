@@ -5,7 +5,7 @@ feature 'creating links' do
   scenario 'user adds a link' do
     visit '/links'
     click_button 'Add link'
-    fill_in_form_and_save
+    add_link
     expect(current_path).to eq '/links'
     within 'ul#links' do
       expect(page).to have_content 'Makers Academy'

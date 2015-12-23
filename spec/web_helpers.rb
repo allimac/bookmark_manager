@@ -1,13 +1,16 @@
-def fill_in_form_and_save(tag = 'dev')
+def add_link(tag = 'dev')
   fill_in('title', with: 'Makers Academy')
   fill_in('url', with: 'www.makersacademy.com')
   fill_in('tag', with: tag)
   click_button 'Save'
 end
 
-def start_registration
+def register(name: 'Giamir', email: 'giamir.buoncristiani@gmail.com',
+            password: 'giamir90', pass_confirm: 'giamir90')
   visit('/register')
-  fill_in('name', with: 'Giamir')
-  fill_in('email', with: 'giamir.buoncristiani@gmail.com')
-  fill_in('password', with: 'giamir90')
+  fill_in('name', with: name)
+  fill_in('email', with: email)
+  fill_in('password', with: password)
+  fill_in('password_confirmation', with: pass_confirm)
+  click_button('Register')
 end

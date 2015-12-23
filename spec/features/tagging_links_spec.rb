@@ -5,7 +5,7 @@
 feature 'Tagging links' do
   scenario 'user adds a tag when creating new link' do
     visit '/links/new'
-    fill_in_form_and_save
+    add_link
     within 'ul#links' do
       expect(page).to have_content('dev')
     end
