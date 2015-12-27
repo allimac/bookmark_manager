@@ -7,13 +7,6 @@
   <input type="password" name="password_confirmation" placeholder="Confirm password" required>
   <input type="submit" value="Register">
 
-  <% if flash[:errors] && !flash[:errors].empty? %>
-  <p> Please check: </p>
-    <ul class="message">
-      <% flash[:errors].each do |error| %>
-        <li> <%= error %> </li>
-      <% end %>
-    </ul>
-  <% end %>
-  
+  <%= partial(:'./partials/errors') %>
+
 </form>

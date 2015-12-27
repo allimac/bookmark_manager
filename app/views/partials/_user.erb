@@ -1,0 +1,14 @@
+<% if @user %>
+  Welcome, <%= @user.name %>
+  <form id="logoutBtn"  action='/sessions/logout' method='post'>
+    <input type='hidden' name='_method' value='delete'>
+    <input type='submit' value='Logout'>
+  </form>
+  <% else %>
+  <form id="registerBtn" action='/register' method='get'>
+    <input type='submit' value='Register'>
+  </form>
+  <form id="loginBtn" action='/sessions/new' method='get'>
+    <input type='submit' value='Log in'>
+  </form>
+<% end %>

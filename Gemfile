@@ -9,6 +9,7 @@ group :development, :production do
   gem 'bcrypt', '~> 3.1', '>= 3.1.10'
   gem 'sinatra-flash', '~> 0.3.0'
   gem 'sinatra', '~> 1.4', '>= 1.4.6'
+  gem 'sinatra-partial', '~> 0.4.0'
 end
 
 group :test do

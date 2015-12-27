@@ -7,10 +7,18 @@ header {
   background-color: rgba(0,0,0,0.1)
 }
 
+/* Buttons */
+
+form#addLinkBtn, form#loginBtn, form#logoutBtn, form#registerBtn {
+  display: inline;
+  float: left;
+}
+
 input[type=text], input[type=email], input[type=password] {
     font-size: 20px;
     clear: both;
 }
+
 
 input:invalid {
   border: 1px solid red;

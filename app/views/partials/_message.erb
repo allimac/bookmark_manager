@@ -1,0 +1,11 @@
+<% if flash[:message] %>
+  <% if flash[:message] == :welcome %>
+    Welcome <%= @user.name %>!
+  <% elsif flash[:message] == :welcome_back %>
+    Welcome back <%= @user.name %>!
+  <% elsif flash[:message] == :goodbye %>
+    Goodbye!
+  <% elsif flash[:message] == :link_added %>
+    Link succesfully added!
+  <% end %>
+<% end %>

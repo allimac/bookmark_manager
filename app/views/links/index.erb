@@ -1,36 +1,13 @@
 <header>
-  <form action='/links/new' method='get'>
+  <%= partial(:'./partials/user') %>
+  <form id="addLinkBtn" action='/links/new' method='get'>
     <input type='submit' value='Add link'>
   </form>
-<% if @user %>
-  Welcome, <%= @user.name %>
-  <form action='/sessions/logout' method='post'>
-    <input type='hidden' name='_method' value='delete'>
-    <input type='submit' value='Logout'>
-  </form>
-<% else %>
-  <form action='/register' method='get'>
-    <input type='submit' value='Register'>
-  </form>
-  <form action='/sessions/new' method='get'>
-    <input type='submit' value='Log in'>
-  </form>
-<% end %>
 </header>
 
 <section>
   <section class="message">
-    <% if flash[:message] %>
-    <% if flash[:message] == :welcome %>
-    Welcome <%= @user.name %>!
-    <% elsif flash[:message] == :welcome_back %>
-    Welcome back <%= @user.name %>!
-    <% elsif flash[:message] == :goodbye %>
-    Goodbye!
-    <% elsif flash[:message] == :link_added %>
-    Link succesfully added!
-    <% end %>
-    <% end %>
+    <%= partial(:'./partials/message') %>
   </section>
   <h1> Links </h1>
   <ul id="links">
