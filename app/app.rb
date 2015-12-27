@@ -9,9 +9,11 @@ class BookmarkManager < Sinatra::Base
   set :session_secret, 'super secret'
   set :public_folder, 'public'
   register Sinatra::Flash
+  use Rack::MethodOverride
 
   get '/links' do
     @links = Link.all
+    @user = User.get(session[:user_id])
     erb :'links/index'
   end
 
@@ -26,7 +28,7 @@ class BookmarkManager < Sinatra::Base
       link.tags << tag
     end
     link.save
-    flash[:message] = 'Link successfully added'
+    flash[:message] = :link_added
     redirect '/links'
   end
 
@@ -41,33 +43,41 @@ class BookmarkManager < Sinatra::Base
   end
 
   post '/register' do
-    user = User.new(name: params[:name], email: params[:email].downcase,
+    @user = User.new(name: params[:name], email: params[:email].downcase,
             password_confirmation: params[:password_confirmation])
-    user.password = params[:password]
-    if user.save
-      flash[:message] = "Welcome #{user.name}!"
+    @user.password = params[:password]
+    if @user.save
+      session[:user_id] = @user.id
+      flash[:message] = :welcome
       redirect '/links'
     else
-      flash[:name] = user.name
-      flash[:email] = user.email
-      flash[:errors] = user.errors.full_messages
+      flash[:name] = @user.name
+      flash[:email] = @user.email
+      flash[:errors] = @user.errors.full_messages
       redirect '/register'
     end
   end
 
-  get '/login' do
-    erb :login
+  get '/sessions/new' do
+    erb :'sessions/new'
   end
 
-  post '/login' do
-    user = User.first(email: params[:email])
-    if user.autenticate?(params[:password])
-      flash[:message] = "Welcome back #{user.name}!"
+  post '/sessions' do
+    @user = User.authenticate(params[:email], params[:password])
+    if @user
+      session[:user_id] = @user.id
+      flash[:message] = :welcome_back
       redirect '/links'
     else
-      flash[:errors] = user.errors.full_messages
-      redirect '/login'
+      flash[:errors] = 'Email or password are incorrect'
+      redirect '/sessions/new'
     end
+  end
+
+  delete '/sessions/logout' do
+    flash[:message] = :goodbye
+    session[:user_id] = nil
+    redirect '/links'
   end
 
 

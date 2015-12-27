@@ -2,6 +2,11 @@ html {
     font-family: 'Open Sans', sans-serif;
 }
 
+header {
+  height: 100px;
+  background-color: rgba(0,0,0,0.1)
+}
+
 input[type=text], input[type=email], input[type=password] {
     font-size: 20px;
     clear: both;

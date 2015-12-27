@@ -1,8 +1,10 @@
 <h1>Log in</h1>
-<form action="/login" method="post">
+
+<form action="/sessions" method="post">
   <input type="email" name="email" value="<%= flash[:email] %>" placeholder="Email" required>
   <input type="password" name="password" placeholder="Password" required>
   <input type="submit" value="Login">
+
   <% if flash[:errors] && !flash[:errors].empty? %>
   <p> Please check: </p>
     <ul class="message">
@@ -11,4 +13,5 @@
       <% end %>
     </ul>
   <% end %>
+  
 </form>

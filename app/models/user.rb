@@ -24,8 +24,9 @@ class User
     self.password_digest = Password.create(password)
   end
 
-  def autenticate?(password)
-    password() == password
+  def self.authenticate(email, password)
+    user = first(:email => email)
+    (user && user.password == password) ? user : nil
   end
 
   has n, :links, through: Resource

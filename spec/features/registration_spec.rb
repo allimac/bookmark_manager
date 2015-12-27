@@ -14,7 +14,9 @@ feature 'Registering' do
   end
 
   scenario 'if email is already taken, user is warned' do
-    2.times { register }
+    register
+    log_out
+    register
     expect(page).to have_content('Email is already taken')
     expect(current_path).not_to eq '/links'
   end
