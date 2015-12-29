@@ -10,6 +10,7 @@ group :development, :production do
   gem 'sinatra-flash', '~> 0.3.0'
   gem 'sinatra', '~> 1.4', '>= 1.4.6'
   gem 'sinatra-partial', '~> 0.4.0'
+  gem 'pony', '~> 1.11'
 end
 
 group :test do

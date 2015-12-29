@@ -1,15 +1,16 @@
 feature 'Registering' do
 
+  let(:email) { 'giammo@email.com' }
+
   scenario 'user creates a new account' do
-    expect { register }.to change(User, :count).by(1)
-    expect(User.last.email).to eq 'giamir.buoncristiani@gmail.com'
+    expect { register(email: email) }.to change(User, :count).by(1)
+    expect(User.last.email).to eq email
     expect(current_path).to eq '/links'
-    expect(page).to have_content 'Welcome Giamir!'
+    expect(page).to have_content "Welcome #{email}!"
   end
 
   scenario 'if email isn\'t enetered, user can\'t register' do
     expect { register(email: nil) }.not_to change(User, :count)
-    expect(page).to have_selector("input[value='Giamir']")
     expect(current_path).not_to eq '/links'
   end
 
@@ -21,11 +22,10 @@ feature 'Registering' do
     expect(current_path).not_to eq '/links'
   end
 
-  scenario 'if password confrim is wrong, no user is created; input fields name
-            and email are still populated' do
+  scenario 'if password confrim is wrong, no user is created; input field
+            email is still populated' do
     expect { register(pass_confirm: 'giamir80') }.not_to change(User, :count)
     expect(page).to have_selector("input[value='giamir.buoncristiani@gmail.com']")
-    expect(page).to have_selector("input[value='Giamir']")
     expect(current_path).not_to eq '/links'
   end
 

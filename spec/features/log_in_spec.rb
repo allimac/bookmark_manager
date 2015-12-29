@@ -1,11 +1,11 @@
 feature 'Logging in' do
 
-  let(:name) { 'Giamir' }
+  let(:email) { 'giammo@email.com' }
 
   scenario 'if a user is registered' do
-    register(name: name)
+    register(email: email)
     log_out
-    log_in
-    expect(page).to have_content 'Welcome back Giamir!'
+    log_in(email: email)
+    expect(page).to have_content "Welcome back #{email}!"
   end
 end

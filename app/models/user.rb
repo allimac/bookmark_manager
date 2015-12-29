@@ -6,10 +6,11 @@ class User
   include BCrypt
 
   property :id, Serial
-  property :name, String,     :required => true
   property :email, String,    :format => :email_address,
                               :required => true, :unique => true
   property :password_digest, Text
+  property :token, Text
+  property :token_time, Time
 
   attr_accessor :password_confirmation
 
@@ -27,6 +28,12 @@ class User
   def self.authenticate(email, password)
     user = first(:email => email)
     (user && user.password == password) ? user : nil
+  end
+
+  def generate_token
+    self.token = SecureRandom.hex(8)
+    self.token_time = Time.now
+    self.save
   end
 
   has n, :links, through: Resource

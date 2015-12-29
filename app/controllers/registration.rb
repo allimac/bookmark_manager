@@ -4,7 +4,7 @@ class BookmarkManager < Sinatra::Base
   end
 
   post '/register' do
-    @user = User.new(name: params[:name], email: params[:email].downcase,
+    @user = User.new(email: params[:email].downcase,
             password_confirmation: params[:password_confirmation])
     @user.password = params[:password]
     if @user.save
@@ -12,7 +12,6 @@ class BookmarkManager < Sinatra::Base
       flash[:message] = :welcome
       redirect '/links'
     else
-      flash[:name] = @user.name
       flash[:email] = @user.email
       flash[:errors] = @user.errors.full_messages
       redirect '/register'
